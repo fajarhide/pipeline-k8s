@@ -1,5 +1,7 @@
 podTemplate(containers: [
-    containerTemplate(name: 'docker', image: 'docker', command: 'cat', ttyEnabled: true)
+    containerTemplate(name: 'docker', image: 'docker', command: 'cat', ttyEnabled: true),
+    containerTemplate(name: 'kubectl', image: 'smesch/kubectl', ttyEnabled: true, command: 'cat',
+        volumes: [secretVolume(secretName: 'kube-config', mountPath: '$(pwd)/rootfs')])
   ],
   volumes: [
     hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock'),
@@ -27,13 +29,10 @@ podTemplate(containers: [
             }
 
             stage ('Deploy') {
-                stage('List pods') {
-                    withKubeConfig([credentialsId: '33d62c96-85a1-4b0c-be97-7756bccea24b',
-                    serverUrl: 'https://kubernetes.docker.internal:6443'
-                    ]) {
-                        sh 'kubectl get pods'
-                }
+                container('kubectl') {
+                            sh 'sed -e "s|BUILD_NUMBER|$BUILD_NUMBER|g" deployment.yaml > deploy.yaml'
+                            sh 'kubectl apply -f deploy.yaml'
+                }   
             }	
-        }
     }
 }
