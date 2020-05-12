@@ -14,7 +14,7 @@ podTemplate(containers: [
             stage('Build Docker Image') {
                 container('docker') {
                         docker.withRegistry('127.0.0.1:5000') {
-				                    sh 'docker build --network=host -f "Dockerfile" -t 127.0.0.1:5000/tofomvc:1.1.$BUILD_NUMBER-prod .'
+				                    sh 'docker build --network=host -f "Dockerfile" -t 127.0.0.1:5000/pipeline-k8s:$BUILD_NUMBER .'
                         }
                 }	
             }
@@ -22,7 +22,7 @@ podTemplate(containers: [
             stage('Push Docker Image') {
                 container('docker') {
                         docker.withRegistry('127.0.0.1:5000') {
-                            sh 'docker push 127.0.0.1:5000/tofomvc:1.1.$BUILD_NUMBER-prod'
+                            sh 'docker push 127.0.0.1:5000/pipeline-k8s:$BUILD_NUMBER'
                         }
                 }	
             }

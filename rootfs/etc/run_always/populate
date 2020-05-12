@@ -7,7 +7,7 @@ if [ ! -d /web/html ]; then
   echo "<html>
   <body>
     <h1>It Works!</h1>
-    Docker container with K8s
+    Docker container with K8s-v2
   </body>
 </html>" > /web/html/index.html
   chown -R nginx.nginx /web/html
