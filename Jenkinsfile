@@ -34,5 +34,6 @@ podTemplate(containers: [
                         sh 'kubectl get pods'
                 }
             }	
+        }
     }
 }
