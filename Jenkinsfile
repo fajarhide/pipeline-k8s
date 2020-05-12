@@ -1,5 +1,6 @@
 podTemplate(containers: [
-    containerTemplate(name: 'docker', image: 'docker', command: 'cat', ttyEnabled: true)
+    containerTemplate(name: 'docker', image: 'docker', command: 'cat', ttyEnabled: true),
+    containerTemplate(name: 'k8s', image: 'buoyantio/kubectl:latest', command: 'cat', ttyEnabled: true)
   ],
   volumes: [
     hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock'),
@@ -27,9 +28,9 @@ podTemplate(containers: [
             }
 
             stage ('Deploy') {
-                container('docker') {
+                container('k8s') {
                             sh 'sed -e "s|BUILD_NUMBER|$BUILD_NUMBER|g" deployment.yaml'
-                            sh 'docker run buoyantio/kubectl:latest apply -f deployment.yaml'
+                            sh 'apply -f deployment.yaml'
                             // sh "ansible-playbook -i inventory playbook.yml --extra-vars \"build_number=${build_number}\" -vvv"
                 }   
             }	
