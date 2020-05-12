@@ -6,7 +6,7 @@ spec:
   selector:
     matchLabels:
       app: pipeline-k8s
-  replicas: 2 # tells deployment to run 2 pods matching the template
+  replicas: 1 # tells deployment to run 2 pods matching the template
   template:
     metadata:
       labels:
@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: pipeline-k8s
-        image: 127.0.0.1:5000/pipeline-k8s:$BUILD_NUMBER
+        image: 127.0.0.1:5000/pipeline-k8s:BUILD_NUMBER
         ports:
         - containerPort: 80
 ---
