@@ -29,7 +29,7 @@ podTemplate(containers: [
             stage ('Deploy') {
                 container('docker') {
                             sh 'sed -e "s|BUILD_NUMBER|$BUILD_NUMBER|g" deployment.yaml'
-                            sh 'docker run buoyantio/kubectl:latest apply -f deployment.yaml'
+                            sh 'docker run -v $(pwd)/deployment.yaml:deployment.yaml buoyantio/kubectl:latest apply -f deployment.yaml'
                             // sh "ansible-playbook -i inventory playbook.yml --extra-vars \"build_number=${build_number}\" -vvv"
                 }   
             }	
