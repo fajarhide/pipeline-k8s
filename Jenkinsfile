@@ -27,11 +27,12 @@ podTemplate(containers: [
             }
 
             stage ('Deploy') {
-                container('docker') {
-                            sh 'sed -e "s|BUILD_NUMBER|$BUILD_NUMBER|g" deployment.yaml > deploy.yaml'
-                            sh 'docker run buoyantio/kubectl:latest apply -f deploy.yaml'
-                            // sh "ansible-playbook -i inventory playbook.yml --extra-vars \"build_number=${build_number}\" -vvv"
-                }   
+                stage('List pods') {
+                    withKubeConfig([credentialsId: '33d62c96-85a1-4b0c-be97-7756bccea24b',
+                    serverUrl: 'https://kubernetes.docker.internal:6443'
+                    ]) {
+                        sh 'kubectl get pods'
+                }
             }	
     }
 }
