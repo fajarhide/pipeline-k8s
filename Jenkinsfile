@@ -1,5 +1,7 @@
 podTemplate(containers: [
-    containerTemplate(name: 'docker', image: 'docker', command: 'cat', ttyEnabled: true)
+    containerTemplate(name: 'docker', image: 'docker', command: 'cat', ttyEnabled: true),
+    containerTemplate(name: 'kubectl', image: 'smesch/kubectl', ttyEnabled: true, command: 'cat',
+        volumes: [secretVolume(secretName: 'kube-config', mountPath: '$(pwd)/.kube')])
   ],
   volumes: [
     hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock'),
@@ -27,7 +29,7 @@ podTemplate(containers: [
             }
 
             stage ('Deploy') {
-                container('docker') {
+                container('kubectl') {
                             sh 'sed -e "s|BUILD_NUMBER|$BUILD_NUMBER|g" deployment.yaml > deploy.yaml'
                             sh 'kubectl apply -f deploy.yaml'
                 }   
