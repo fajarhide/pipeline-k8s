@@ -30,7 +30,9 @@ podTemplate(containers: [
 
             stage ('Deploy') {
                 container('kubectl') {
+                            sh 'pwd'
                             sh 'sed -e "s|BUILD_NUMBER|$BUILD_NUMBER|g" deployment.yaml > deploy.yaml'
+                            sh 'pwd'
                             sh 'kubectl apply -f deploy.yaml'
                 }   
             }	
