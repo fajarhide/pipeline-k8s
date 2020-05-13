@@ -1,7 +1,6 @@
 podTemplate(containers: [
     containerTemplate(name: 'docker', image: 'docker', command: 'cat', ttyEnabled: true),
-    containerTemplate(name: 'kubectl', image: 'fajarhide/kubectl', ttyEnabled: true, command: 'cat',
-        volumes: [secretVolume(secretName: 'kube-config', mountPath: '$(pwd)/.kube')])
+    containerTemplate(name: 'kubectl', image: 'fajarhide/kubectl', ttyEnabled: true, command: 'cat')
   ],
   volumes: [
     hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock'),
